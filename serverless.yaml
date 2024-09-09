@@ -1,0 +1,23 @@
+service: efulfillment-order-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    MERCHANT_ID: ${env:MERCHANT_ID}
+    MERCHANT_NAME: ${env:MERCHANT_NAME}
+    MERCHANT_TOKEN: ${env:MERCHANT_TOKEN}
+    SHOPIFY_WEBHOOK_SECRET: ${env:SHOPIFY_WEBHOOK_SECRET}
+
+functions:
+  sendOrder:
+    handler: index.sendOrder
+    timeout: 30
+    events:
+      - http:
+          path: webhook
+          method: post
+
+plugins:
+  - serverless-dotenv-plugin
